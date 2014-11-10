@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+        <title>Hello World</title>
+    </head>
+    <body>
+        <div class="app">
+            <div id="deviceready" class="blink">
+                <p class="event listening">Connecting to Device</p>
+                <p class="event received">Socket测试</p>
+            </div>
+            <div>
+                <br>
+                <button onclick="connect()">连 接</button>&nbsp;
+                <button onclick="isConnected()">是否连接</button>&nbsp;
+                <button onclick="disconnect()">断开</button>
+            </div>
+            <hr>
+            IP：<input id="ip" value="192.168.1.99"><br><br>端口：<input id="port" value="9999">
+            <hr>
+            发送数据：<br><textarea id="data" style="width:100%;height:50px;">aa551dd00004c9981baea739db51441e00f50043331100000000</textarea>
+            <hr>
+            <button onclick="send()">发 送</button>
+            <hr>
+            接收到的数据：
+            <textarea id="back" style="min-height:500px;width:100%;">
+            </textarea>
+        </div>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript">
+            //app.initialize();
+            
+            
+        //data = "this is a test...",
+        key = "";
+        
+        function stub(d) {
+            console.log(d);
+            alert(d);
+        }
+        
+        function onConnect(k) {
+            alert('连接上 '+ k);
+            key = k;
+        }
+        
+        function connect() {
+            var host = document.getElementById('ip').value.replace(/\s/g, '');
+            var port = document.getElementById('port').value.replace(/\s/g, '') *1;
+            window.tlantic.plugins.socket.connect(onConnect, stub, host, port);
+            //window.tlantic.plugins.socket.connect(stub, stub, host, 18004);
+        }
+        
+        function send() {
+            var data = document.getElementById('data').value;
+            alert('将要发送的数据是：'+ data);
+            window.tlantic.plugins.socket.send(stub, stub, key, data);
+        }
+        
+        function disconnect() {
+            window.tlantic.plugins.socket.disconnect(stub, stub, key);
+        }
+        
+        function disconnectAll() {
+            window.tlantic.plugins.socket.disconnectAll(stub, stub);
+        }
+        
+        function isConnected() {
+            window.tlantic.plugins.socket.isConnected(key, stub, stub);
+        }
+        
+        document.addEventListener('SOCKET_RECEIVE_DATA_HOOK', function (ev) {
+                                  console.log('Data has been received: '+ ev.metadata);
+                                  var s = ev.metadata.data;//.replace(/\n/g, '<br>');
+                                  //alert(s);
+                                  document.getElementById('back').value = s;
+                                                               
+                                  });
+            </script>
+
+    </body>
+</html>
