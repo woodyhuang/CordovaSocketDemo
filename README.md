@@ -12,20 +12,20 @@ A socket client demo for Cordova
 
 
 ##How To##
-1. install cordova:
+1- install cordova:
 ```
 npm install -g cordova
 ```
-2. add platform:
+2- add platform:
 ```
 cordova platform add ios
 ```
-3. re-install plugin:
+3- re-install plugin:
 ```
 cordova plugin rm com.tlantic.plugins.socket
 cordova plugin add com.tlantic.plugins.socket
 ```
-4. build platform:
+4- build platform:
 ```
 cordova build ios
 ```
